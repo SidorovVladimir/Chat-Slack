@@ -1,13 +1,9 @@
-
 import LoginPage from "./LoginPage";
 
-
-const App = () => {
-  return (
-    <div>
-      <LoginPage />
-    </div>
-  )
-};
+const App = () => (
+  <div>
+    <LoginPage />
+  </div>
+);
 
 export default App;
