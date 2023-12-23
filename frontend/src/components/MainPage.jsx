@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
-import { Container, Row } from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import useAuth from "../hooks/useAuth.jsx";
-import { fetchContent } from "../slices/channelsSlice.js";
-import ChannelsList from "./ChannelsList.jsx";
-import Chat from "./Chat.jsx";
+import React, { useEffect } from 'react';
+import { Container, Row } from 'react-bootstrap';
+import { useDispatch } from 'react-redux';
+import useAuth from '../hooks/useAuth.jsx';
+import { fetchContent } from '../slices/channelsSlice.js';
+import ChannelsList from './ChannelsList.jsx';
+import Chat from './Chat.jsx';
 
 const MainPage = () => {
   const auth = useAuth();

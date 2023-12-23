@@ -1,14 +1,14 @@
 /* eslint-disable no-param-reassign */
-import axios from "axios";
+import axios from 'axios';
 import {
   createSlice,
   createAsyncThunk,
   createEntityAdapter,
-} from "@reduxjs/toolkit";
-import routes from "../routes.js";
+} from '@reduxjs/toolkit';
+import routes from '../routes.js';
 
 export const fetchContent = createAsyncThunk(
-  "channels/fetchContent",
+  'channels/fetchContent',
   async (header) => {
     const { data } = await axios.get(routes.usersPath(), {
       headers: header,
@@ -24,7 +24,7 @@ const initialState = channelsAdapter.getInitialState({
 });
 
 const channelsSlice = createSlice({
-  name: "channels",
+  name: 'channels',
   initialState,
   reducers: {
     setCurrentChannel: (state, { payload }) => {

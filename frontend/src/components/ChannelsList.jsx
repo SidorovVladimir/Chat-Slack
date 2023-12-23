@@ -1,23 +1,23 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Col, Button, Dropdown, ButtonGroup } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import { toast } from "react-toastify";
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Col, Button, Dropdown, ButtonGroup } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import {
   setCurrentChannel,
   addChannel,
   removeChannel,
   renameChannel,
-} from "../slices/channelsSlice";
-import { addMessage } from "../slices/messagesSlice";
-import { getChannels } from "../slices/selectors";
-import { closeModal, openModal } from "../slices/modalsSlice";
-import ModalComponent from "./Modal.jsx";
-import useChat from "../hooks/useChat";
+} from '../slices/channelsSlice';
+import { addMessage } from '../slices/messagesSlice';
+import { getChannels } from '../slices/selectors';
+import { closeModal, openModal } from '../slices/modalsSlice';
+import ModalComponent from './Modal.jsx';
+import useChat from '../hooks/useChat';
 
 const Channel = ({ channels, channel, showModal, handleSetCurrenChannel }) => {
   const { t } = useTranslation();
-  const variant = channel.id === channels.currentChannelId ? "secondary" : "";
+  const variant = channel.id === channels.currentChannelId ? 'secondary' : '';
 
   return (
     <li key={channel.id} className="nav-item w-100">
@@ -33,15 +33,15 @@ const Channel = ({ channels, channel, showModal, handleSetCurrenChannel }) => {
           </Button>
           <Dropdown.Toggle split variant={variant} className="flex-grow-0">
             <span className="visually-hidden">
-              {t("channelList.channelControl")}
+              {t('channelList.channelControl')}
             </span>
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            <Dropdown.Item onClick={() => showModal("removing", channel.id)}>
-              {t("channelList.delete")}
+            <Dropdown.Item onClick={() => showModal('removing', channel.id)}>
+              {t('channelList.delete')}
             </Dropdown.Item>
-            <Dropdown.Item onClick={() => showModal("renaming", channel.id)}>
-              {t("channelList.rename")}
+            <Dropdown.Item onClick={() => showModal('renaming', channel.id)}>
+              {t('channelList.rename')}
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
@@ -78,14 +78,14 @@ const ChannelsList = () => {
 
   const handleStatus = ({ status }) => {
     switch (status) {
-      case "Network error":
-        toast.error(t("errors.networkError"));
+      case 'Network error':
+        toast.error(t('errors.networkError'));
         break;
-      case "ok":
+      case 'ok':
         hideModal();
         break;
       default:
-        toast.error(t("errors.unknownError"));
+        toast.error(t('errors.unknownError'));
     }
   };
 
@@ -95,30 +95,30 @@ const ChannelsList = () => {
     };
 
     const setNewChannel = (newChannel) => {
-      toast.success(t("channelList.channelCreated"));
+      toast.success(t('channelList.channelCreated'));
       dispatch(addChannel(newChannel));
       dispatch(setCurrentChannel(newChannel.id));
     };
     const setRemoveChannel = ({ id }) => {
-      toast.success(t("channelList.channelRemoved"));
+      toast.success(t('channelList.channelRemoved'));
       dispatch(removeChannel(id));
       dispatch(setCurrentChannel(channels.defaultChannelId));
     };
     const setRenameChannel = (channel) => {
-      toast.success(t("channelList.channelRenamed"));
+      toast.success(t('channelList.channelRenamed'));
       dispatch(renameChannel(channel));
     };
 
-    chatApi.socket.on("newMessage", setNewMessage);
-    chatApi.socket.on("newChannel", setNewChannel);
-    chatApi.socket.on("removeChannel", setRemoveChannel);
-    chatApi.socket.on("renameChannel", setRenameChannel);
+    chatApi.socket.on('newMessage', setNewMessage);
+    chatApi.socket.on('newChannel', setNewChannel);
+    chatApi.socket.on('removeChannel', setRemoveChannel);
+    chatApi.socket.on('renameChannel', setRenameChannel);
 
     return () => {
-      chatApi.socket.off("newMessage", setNewMessage);
-      chatApi.socket.off("newChannel", setNewChannel);
-      chatApi.socket.off("removeChannel", setRemoveChannel);
-      chatApi.socket.off("renameChannel", setRenameChannel);
+      chatApi.socket.off('newMessage', setNewMessage);
+      chatApi.socket.off('newChannel', setNewChannel);
+      chatApi.socket.off('removeChannel', setRemoveChannel);
+      chatApi.socket.off('renameChannel', setRenameChannel);
     };
   }, [chatApi.socket, dispatch, channels.defaultChannelId, t]);
 
@@ -128,11 +128,11 @@ const ChannelsList = () => {
       className="col-4 border-end px-0 bg-light flex-column h-100 d-flex"
     >
       <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-        <b>{t("channelList.channel")}</b>
+        <b>{t('channelList.channel')}</b>
         <Button
           className="p-0 text-primary"
           variant="group-vertical"
-          onClick={() => showModal("adding")}
+          onClick={() => showModal('adding')}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

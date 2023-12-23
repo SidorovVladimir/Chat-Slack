@@ -1,14 +1,14 @@
 // import React, { useRef, useEffect } from "react";
-import React from "react";
-import { useSelector } from "react-redux";
-import { Col } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { Col } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import {
   getCurrentChannelId,
   getMessages,
   getChannels,
-} from "../slices/selectors";
-import MessageForm from "./MessageForm";
+} from '../slices/selectors';
+import MessageForm from './MessageForm';
 
 const Header = () => {
   const { t } = useTranslation();
@@ -29,7 +29,7 @@ const Header = () => {
       </p>
       {/* <span className="text-muted">{`${currentChannelMessages.length} message`}</span> */}
       <span className="text-muted">
-        {`${currentChannelMessages.length} ${t("chat.messageCount", {
+        {`${currentChannelMessages.length} ${t('chat.messageCount', {
           count: currentChannelMessages.length,
         })}`}
       </span>
@@ -54,7 +54,7 @@ const Body = () => {
         // <div ref={lastMessage} key={message.id} className="text-break mb-2">
         <div key={message.id} className="text-break mb-2">
           <b>{message.username}</b>
-          {": "}
+          {': '}
           {message.body}
         </div>
       ))}

@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 
-import React, { createContext } from "react";
-import useSocket from "../hooks/useSocket";
+import React, { createContext } from 'react';
+import useSocket from '../hooks/useSocket';
 
 export const ChatContext = createContext();
 
@@ -9,13 +9,13 @@ const ChatProvider = ({ children }) => {
   const socket = useSocket();
 
   const addNewMessage = (message) => {
-    socket.volatile.emit("newMessage", message);
+    socket.volatile.emit('newMessage', message);
   };
 
   const addNewChannel = (channel, cb) => {
-    socket.volatile.timeout(1000).emit("newChannel", channel, (err, res) => {
+    socket.volatile.timeout(1000).emit('newChannel', channel, (err, res) => {
       if (err) {
-        const error = { status: "Network error" };
+        const error = { status: 'Network error' };
         cb(error);
       } else {
         cb(res);
@@ -23,9 +23,9 @@ const ChatProvider = ({ children }) => {
     });
   };
   const removeChannel = (id, cb) => {
-    socket.volatile.timeout(1000).emit("removeChannel", { id }, (err, res) => {
+    socket.volatile.timeout(1000).emit('removeChannel', { id }, (err, res) => {
       if (err) {
-        const error = { status: "Network error" };
+        const error = { status: 'Network error' };
         cb(error);
       } else {
         cb(res);
@@ -34,14 +34,14 @@ const ChatProvider = ({ children }) => {
   };
   const renameChannel = (channel, cb) => {
     socket.volatile.timeout(1000).emit(
-      "renameChannel",
+      'renameChannel',
       {
         id: channel.id,
         name: channel.name,
       },
       (err, res) => {
         if (err) {
-          const error = { status: "Network error" };
+          const error = { status: 'Network error' };
           cb(error);
         } else {
           cb(res);

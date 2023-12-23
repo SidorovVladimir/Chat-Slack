@@ -1,13 +1,13 @@
-import React, { useRef, useEffect } from "react";
-import { useFormik } from "formik";
-import { Form, Button } from "react-bootstrap";
-import * as Yup from "yup";
-import { useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
-import LeoProfanity from "leo-profanity";
-import useAuth from "../hooks/useAuth";
-import { getCurrentChannelId } from "../slices/selectors";
-import useChat from "../hooks/useChat";
+import React, { useRef, useEffect } from 'react';
+import { useFormik } from 'formik';
+import { Form, Button } from 'react-bootstrap';
+import * as Yup from 'yup';
+import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
+import LeoProfanity from 'leo-profanity';
+import useAuth from '../hooks/useAuth';
+import { getCurrentChannelId } from '../slices/selectors';
+import useChat from '../hooks/useChat';
 
 const MessageForm = () => {
   const { t } = useTranslation();
@@ -27,7 +27,7 @@ const MessageForm = () => {
 
   const formik = useFormik({
     initialValues: {
-      body: "",
+      body: '',
     },
     validationSchema,
     onSubmit: (values) => {
@@ -53,8 +53,8 @@ const MessageForm = () => {
           <Form.Control
             ref={inputRef}
             name="body"
-            aria-label={t("messageForm.labelNewMessage")}
-            placeholder={t("messageForm.labelMessage")}
+            aria-label={t('messageForm.labelNewMessage')}
+            placeholder={t('messageForm.labelMessage')}
             className="border-0 p-0 ps-2 form-control"
             value={formik.values.body}
             onChange={formik.handleChange}
@@ -63,7 +63,7 @@ const MessageForm = () => {
             type="submit"
             disabled={!formik.dirty || !formik.isValid}
             variant="group-vertical"
-            style={{ border: "none" }}
+            style={{ border: 'none' }}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -78,7 +78,7 @@ const MessageForm = () => {
               />
             </svg>
             <span className="visually-hidden">
-              {t("messageForm.buttonSend")}
+              {t('messageForm.buttonSend')}
             </span>
           </Button>
         </div>

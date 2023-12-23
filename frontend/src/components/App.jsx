@@ -1,15 +1,15 @@
-import React from "react";
-import { Route, Routes, BrowserRouter, Navigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import useAuth from "../hooks/useAuth.jsx";
-import routes from "../routes.js";
-import AuthProvider from "../contexts/AuthContext.jsx";
-import ChatProvider from "../contexts/ChatContext.jsx";
-import LoginPage from "./LoginPage.jsx";
-import NotFound from "./NotFound.jsx";
-import SignupPage from "./SignupPage.jsx";
-import MainPage from "./MainPage.jsx";
-import Nav from "./Nav.jsx";
+import React from 'react';
+import { Route, Routes, BrowserRouter, Navigate } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import useAuth from '../hooks/useAuth.jsx';
+import routes from '../routes.js';
+import AuthProvider from '../contexts/AuthContext.jsx';
+import ChatProvider from '../contexts/ChatContext.jsx';
+import LoginPage from './LoginPage.jsx';
+import NotFound from './NotFound.jsx';
+import SignupPage from './SignupPage.jsx';
+import MainPage from './MainPage.jsx';
+import Nav from './Nav.jsx';
 
 const AuthMain = ({ children }) => {
   const auth = useAuth();

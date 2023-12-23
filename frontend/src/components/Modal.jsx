@@ -1,24 +1,24 @@
-import React, { useRef, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useFormik } from "formik";
-import { useTranslation } from "react-i18next";
-import * as Yup from "yup";
-import { Modal, Button, Form } from "react-bootstrap";
-import useChat from "../hooks/useChat.jsx";
+import React, { useRef, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useFormik } from 'formik';
+import { useTranslation } from 'react-i18next';
+import * as Yup from 'yup';
+import { Modal, Button, Form } from 'react-bootstrap';
+import useChat from '../hooks/useChat.jsx';
 import {
   getChannels,
   getTypeModal,
   getChannelId,
-} from "../slices/selectors.js";
+} from '../slices/selectors.js';
 
 const getValidationShema = (channel, t) =>
   Yup.object().shape({
     name: Yup.string()
       .trim()
-      .required(t("validate.required"))
-      .min(3, t("validate.min_max"))
-      .max(20, t("validate.min_max"))
-      .notOneOf(channel, t("validate.unique")),
+      .required(t('validate.required'))
+      .min(3, t('validate.min_max'))
+      .max(20, t('validate.min_max'))
+      .notOneOf(channel, t('validate.unique')),
   });
 
 const AddChannel = ({ handleStatus, hideModal }) => {
@@ -37,7 +37,7 @@ const AddChannel = ({ handleStatus, hideModal }) => {
 
   const formik = useFormik({
     initialValues: {
-      name: "",
+      name: '',
     },
     validationSchema: getValidationShema(channelsName, t),
     onSubmit: (values) => {
@@ -51,7 +51,7 @@ const AddChannel = ({ handleStatus, hideModal }) => {
   return (
     <Modal show centered onHide={hideModal}>
       <Modal.Header closeButton>
-        <Modal.Title>{t("modal.titleAddChannel")}</Modal.Title>
+        <Modal.Title>{t('modal.titleAddChannel')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
@@ -67,7 +67,7 @@ const AddChannel = ({ handleStatus, hideModal }) => {
               isInvalid={!formik.isValid}
             />
             <Form.Label className="visually-hidden" htmlFor="name">
-              {t("modal.channelNameLabel")}
+              {t('modal.channelNameLabel')}
             </Form.Label>
 
             <Form.Control.Feedback type="invalid">
@@ -81,9 +81,9 @@ const AddChannel = ({ handleStatus, hideModal }) => {
               variant="secondary"
               onClick={hideModal}
             >
-              {t("modal.buttonCancel")}
+              {t('modal.buttonCancel')}
             </Button>
-            <Button type="submit">{t("modal.buttonSend")}</Button>
+            <Button type="submit">{t('modal.buttonSend')}</Button>
           </Form.Group>
         </Form>
       </Modal.Body>
@@ -103,10 +103,10 @@ const RemoveChannel = ({ handleStatus, hideModal }) => {
   return (
     <Modal show centered onHide={hideModal}>
       <Modal.Header closeButton>
-        <Modal.Title>{t("modal.titleDeleteChannel")}</Modal.Title>
+        <Modal.Title>{t('modal.titleDeleteChannel')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p className="lead">{t("modal.subTitle")}</p>
+        <p className="lead">{t('modal.subTitle')}</p>
 
         <div className="d-flex justify-content-end">
           <Button
@@ -115,14 +115,14 @@ const RemoveChannel = ({ handleStatus, hideModal }) => {
             variant="secondary"
             onClick={hideModal}
           >
-            {t("modal.buttonCancel")}
+            {t('modal.buttonCancel')}
           </Button>
           <Button
             variant="danger"
             type="button"
             onClick={() => handleRemoveChannel(channelId)}
           >
-            {t("modal.buttonDelete")}
+            {t('modal.buttonDelete')}
           </Button>
         </div>
       </Modal.Body>
@@ -162,7 +162,7 @@ const RenameChannel = ({ handleStatus, hideModal }) => {
   return (
     <Modal show centered onHide={hideModal}>
       <Modal.Header closeButton>
-        <Modal.Title>{t("modal.titleRenameChannel")}</Modal.Title>
+        <Modal.Title>{t('modal.titleRenameChannel')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
@@ -178,7 +178,7 @@ const RenameChannel = ({ handleStatus, hideModal }) => {
               isInvalid={!formik.isValid}
             />
             <Form.Label className="visually-hidden" htmlFor="name">
-              {t("modal.channelNameLabel")}
+              {t('modal.channelNameLabel')}
             </Form.Label>
 
             <Form.Control.Feedback type="invalid">
@@ -192,9 +192,9 @@ const RenameChannel = ({ handleStatus, hideModal }) => {
               variant="secondary"
               onClick={hideModal}
             >
-              {t("modal.buttonCancel")}
+              {t('modal.buttonCancel')}
             </Button>
-            <Button type="submit">{t("modal.buttonSend")}</Button>
+            <Button type="submit">{t('modal.buttonSend')}</Button>
           </Form.Group>
         </Form>
       </Modal.Body>
