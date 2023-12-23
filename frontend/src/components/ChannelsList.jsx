@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Col, Button, Dropdown, ButtonGroup } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 import {
   setCurrentChannel,
   addChannel,
@@ -14,6 +16,7 @@ import ModalComponent from "./Modal.jsx";
 import useChat from "../hooks/useChat";
 
 const Channel = ({ channels, channel, showModal, handleSetCurrenChannel }) => {
+  const { t } = useTranslation();
   const variant = channel.id === channels.currentChannelId ? "secondary" : "";
 
   return (
@@ -29,21 +32,23 @@ const Channel = ({ channels, channel, showModal, handleSetCurrenChannel }) => {
             {channel.name}
           </Button>
           <Dropdown.Toggle split variant={variant} className="flex-grow-0">
-            <span className="visually-hidden">Управление каналом</span>
+            <span className="visually-hidden">
+              {t("channelList.channelControl")}
+            </span>
           </Dropdown.Toggle>
           <Dropdown.Menu>
             <Dropdown.Item onClick={() => showModal("removing", channel.id)}>
-              Удалить
+              {t("channelList.delete")}
             </Dropdown.Item>
             <Dropdown.Item onClick={() => showModal("renaming", channel.id)}>
-              Переименовать
+              {t("channelList.rename")}
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
       ) : (
         <Button
           variant={variant}
-          className="w-100 rounded-0 text-start btn"
+          className="w-100 rounded-0 text-start"
           onClick={() => handleSetCurrenChannel(channel.id)}
         >
           <span className="me-1">#</span>
@@ -55,9 +60,34 @@ const Channel = ({ channels, channel, showModal, handleSetCurrenChannel }) => {
 };
 
 const ChannelsList = () => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const chatApi = useChat();
   const channels = useSelector(getChannels);
+
+  const handleSetCurrenChannel = (id) => {
+    dispatch(setCurrentChannel(id));
+  };
+
+  const showModal = (type, id = null) => {
+    dispatch(openModal({ type, id }));
+  };
+  const hideModal = () => {
+    dispatch(closeModal());
+  };
+
+  const handleStatus = ({ status }) => {
+    switch (status) {
+      case "Network error":
+        toast.error(t("errors.networkError"));
+        break;
+      case "ok":
+        hideModal();
+        break;
+      default:
+        toast.error(t("errors.unknownError"));
+    }
+  };
 
   useEffect(() => {
     const setNewMessage = (newMessage) => {
@@ -65,14 +95,17 @@ const ChannelsList = () => {
     };
 
     const setNewChannel = (newChannel) => {
+      toast.success(t("channelList.channelCreated"));
       dispatch(addChannel(newChannel));
       dispatch(setCurrentChannel(newChannel.id));
     };
     const setRemoveChannel = ({ id }) => {
+      toast.success(t("channelList.channelRemoved"));
       dispatch(removeChannel(id));
       dispatch(setCurrentChannel(channels.defaultChannelId));
     };
     const setRenameChannel = (channel) => {
+      toast.success(t("channelList.channelRenamed"));
       dispatch(renameChannel(channel));
     };
 
@@ -87,18 +120,7 @@ const ChannelsList = () => {
       chatApi.socket.off("removeChannel", setRemoveChannel);
       chatApi.socket.off("renameChannel", setRenameChannel);
     };
-  }, [chatApi.socket, dispatch, channels.defaultChannelId]);
-
-  const handleSetCurrenChannel = (id) => {
-    dispatch(setCurrentChannel(id));
-  };
-
-  const showModal = (type, id = null) => {
-    dispatch(openModal({ type, id }));
-  };
-  const hideModal = () => {
-    dispatch(closeModal());
-  };
+  }, [chatApi.socket, dispatch, channels.defaultChannelId, t]);
 
   return (
     <Col
@@ -106,7 +128,7 @@ const ChannelsList = () => {
       className="col-4 border-end px-0 bg-light flex-column h-100 d-flex"
     >
       <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-        <b>Каналы</b>
+        <b>{t("channelList.channel")}</b>
         <Button
           className="p-0 text-primary"
           variant="group-vertical"
@@ -139,7 +161,7 @@ const ChannelsList = () => {
           />
         ))}
       </ul>
-      <ModalComponent hideModal={hideModal} />
+      <ModalComponent handleStatus={handleStatus} hideModal={hideModal} />
     </Col>
   );
 };

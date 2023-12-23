@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 import {
   Container,
   Row,
@@ -17,6 +19,7 @@ import routes from "../routes.js";
 import img from "../assets/imageSignupPage.jpg";
 
 const SignupForm = () => {
+  const { t } = useTranslation();
   const { logIn } = useAuth();
   const navigate = useNavigate();
   const [registrationFailed, setRegistrationFailed] = useState(false);
@@ -28,17 +31,17 @@ const SignupForm = () => {
 
   const signupSchema = Yup.object().shape({
     username: Yup.string()
-      .required("Обязательное поле")
+      .required(t("validate.required"))
       .trim()
-      .min(3, "От 3 до 20 символов")
-      .max(20, "От 3 до 20 символов"),
+      .min(3, t("validate.min_max"))
+      .max(20, t("validate.min_max")),
     password: Yup.string()
-      .min(6, "Не менее 6 символов")
+      .min(6, t("validate.passwordMin"))
       .trim()
-      .required("Обязательное поле"),
+      .required(t("validate.required")),
     confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Пароли должны совпадать")
-      .required("Обязательное поле"),
+      .oneOf([Yup.ref("password"), null], t("validate.mustMatch"))
+      .required(t("validate.required")),
   });
   const formik = useFormik({
     initialValues: {
@@ -61,6 +64,9 @@ const SignupForm = () => {
         logIn(response);
         navigate(routes.chatPagePath());
       } catch (err) {
+        if (err.message === "Network Error") {
+          toast.error(t("errors.networkError"));
+        }
         if (err.response.status === 409) {
           setRegistrationFailed(true);
           inputRef.current.select();
@@ -72,7 +78,7 @@ const SignupForm = () => {
   });
   return (
     <Form className="w-50" onSubmit={formik.handleSubmit}>
-      <h1 className="text-center mb-4">Регистрация</h1>
+      <h1 className="text-center mb-4">{t("signup.title")}</h1>
       <Form.Floating className="mb-3">
         <Form.Control
           onChange={formik.handleChange}
@@ -81,7 +87,7 @@ const SignupForm = () => {
           name="username"
           autoComplete="username"
           required
-          placeholder="От 3 до 20 символов"
+          placeholder={t("validate.min_max")}
           id="username"
           value={formik.values.username}
           isInvalid={
@@ -89,7 +95,7 @@ const SignupForm = () => {
             registrationFailed
           }
         />
-        <Form.Label htmlFor="username">Имя пользователя</Form.Label>
+        <Form.Label htmlFor="username">{t("signup.labelName")}</Form.Label>
         <Form.Control.Feedback type="invalid" tooltip>
           {formik.errors.username}
         </Form.Control.Feedback>
@@ -102,7 +108,7 @@ const SignupForm = () => {
           aria-description="passwordHelpBlock"
           autoComplete="new-password"
           required
-          placeholder="Не менее 6 символов"
+          placeholder={t("validate.passwordMin")}
           type="password"
           id="password"
           value={formik.values.password}
@@ -115,7 +121,7 @@ const SignupForm = () => {
           {formik.errors.password}
         </Form.Control.Feedback>
 
-        <Form.Label htmlFor="password">Пароль</Form.Label>
+        <Form.Label htmlFor="password">{t("signup.labelPassword")}</Form.Label>
       </Form.Floating>
       <Form.Floating className="mb-4">
         <Form.Control
@@ -124,7 +130,7 @@ const SignupForm = () => {
           onBlur={formik.handleBlur}
           autoComplete="new-password"
           required
-          placeholder="Пароли должны совпадать"
+          placeholder={t("validate.mustMatch")}
           type="password"
           id="confirmPassword"
           value={formik.values.confirmPassword}
@@ -135,33 +141,38 @@ const SignupForm = () => {
         />
         <Form.Control.Feedback type="invalid" tooltip>
           {registrationFailed
-            ? "Такой пользователь уже существует"
+            ? t("signup.alreadyExists")
             : formik.errors.confirmPassword}
         </Form.Control.Feedback>
-        <Form.Label htmlFor="confirmPassword">Подтвердите пароль</Form.Label>
+        <Form.Label htmlFor="confirmPassword">
+          {t("signup.labelConfirmPassword")}
+        </Form.Label>
       </Form.Floating>
       <Button type="submit" className="w-100 mb-3" variant="outline-primary">
-        Зарегистрироваться
+        {t("signup.buttonSignup")}
       </Button>
     </Form>
   );
 };
 
-const SignupPage = () => (
-  <Container fluid className="h-100">
-    <Row className="justify-content-center align-content-center h-100">
-      <Col md={8} xxl={6} className="col-12">
-        <Card className="shadow-sm">
-          <Card.Body className="d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
-            <div>
-              <Image src={img} roundedCircle alt="Регистрация" />
-            </div>
-            <SignupForm />
-          </Card.Body>
-        </Card>
-      </Col>
-    </Row>
-  </Container>
-);
+const SignupPage = () => {
+  const { t } = useTranslation();
+  return (
+    <Container fluid className="h-100">
+      <Row className="justify-content-center align-content-center h-100">
+        <Col md={8} xxl={6} className="col-12">
+          <Card className="shadow-sm">
+            <Card.Body className="d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
+              <div>
+                <Image src={img} roundedCircle alt={t("signup.title")} />
+              </div>
+              <SignupForm />
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
+  );
+};
 
 export default SignupPage;

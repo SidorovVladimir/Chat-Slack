@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Routes, BrowserRouter, Navigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 import useAuth from "../hooks/useAuth.jsx";
 import routes from "../routes.js";
 import AuthProvider from "../contexts/AuthContext.jsx";
@@ -17,10 +18,10 @@ const AuthMain = ({ children }) => {
 };
 
 const App = () => (
-  <div className="d-flex flex-column h-100">
-    <AuthProvider>
-      <ChatProvider>
-        <BrowserRouter>
+  <AuthProvider>
+    <ChatProvider>
+      <BrowserRouter>
+        <div className="d-flex flex-column h-100">
           <Nav />
           <Routes>
             <Route path={routes.loginPagePath()} element={<LoginPage />} />
@@ -35,10 +36,11 @@ const App = () => (
               }
             />
           </Routes>
-        </BrowserRouter>
-      </ChatProvider>
-    </AuthProvider>
-  </div>
+        </div>
+        <ToastContainer />
+      </BrowserRouter>
+    </ChatProvider>
+  </AuthProvider>
 );
 
 export default App;

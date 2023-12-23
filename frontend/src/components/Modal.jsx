@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useFormik } from "formik";
+import { useTranslation } from "react-i18next";
 import * as Yup from "yup";
 import { Modal, Button, Form } from "react-bootstrap";
 import useChat from "../hooks/useChat.jsx";
@@ -10,17 +11,18 @@ import {
   getChannelId,
 } from "../slices/selectors.js";
 
-const getValidationShema = (channel) =>
+const getValidationShema = (channel, t) =>
   Yup.object().shape({
     name: Yup.string()
       .trim()
-      .required("Обязательное поле")
-      .min(3, "От 3 до 20 символов")
-      .max(20, "От 3 до 20 символов")
-      .notOneOf(channel, "Должно быть уникальным"),
+      .required(t("validate.required"))
+      .min(3, t("validate.min_max"))
+      .max(20, t("validate.min_max"))
+      .notOneOf(channel, t("validate.unique")),
   });
 
-const AddChannel = ({ hideModal }) => {
+const AddChannel = ({ handleStatus, hideModal }) => {
+  const { t } = useTranslation();
   const channels = useSelector(getChannels);
   const channelsName = Object.values(channels.entities).map(
     (channel) => channel.name
@@ -37,18 +39,19 @@ const AddChannel = ({ hideModal }) => {
     initialValues: {
       name: "",
     },
-    validationSchema: getValidationShema(channelsName),
+    validationSchema: getValidationShema(channelsName, t),
     onSubmit: (values) => {
       const newNameChannel = { name: values.name };
-      chatApi.addNewChannel(newNameChannel);
-      hideModal();
+      chatApi.addNewChannel(newNameChannel, handleStatus);
     },
+    validateOnBlur: false,
+    validateOnChange: false,
   });
 
   return (
     <Modal show centered onHide={hideModal}>
       <Modal.Header closeButton>
-        <Modal.Title>Добавить канал</Modal.Title>
+        <Modal.Title>{t("modal.titleAddChannel")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
@@ -64,7 +67,7 @@ const AddChannel = ({ hideModal }) => {
               isInvalid={!formik.isValid}
             />
             <Form.Label className="visually-hidden" htmlFor="name">
-              Имя канала
+              {t("modal.channelNameLabel")}
             </Form.Label>
 
             <Form.Control.Feedback type="invalid">
@@ -78,9 +81,9 @@ const AddChannel = ({ hideModal }) => {
               variant="secondary"
               onClick={hideModal}
             >
-              Отменить
+              {t("modal.buttonCancel")}
             </Button>
-            <Button type="submit">Отправить</Button>
+            <Button type="submit">{t("modal.buttonSend")}</Button>
           </Form.Group>
         </Form>
       </Modal.Body>
@@ -88,22 +91,22 @@ const AddChannel = ({ hideModal }) => {
   );
 };
 
-const RemoveChannel = ({ hideModal }) => {
+const RemoveChannel = ({ handleStatus, hideModal }) => {
+  const { t } = useTranslation();
   const chatApi = useChat();
   const channelId = useSelector(getChannelId);
 
   const handleRemoveChannel = (id) => {
-    chatApi.removeChannel(id);
-    hideModal();
+    chatApi.removeChannel(id, handleStatus);
   };
 
   return (
     <Modal show centered onHide={hideModal}>
       <Modal.Header closeButton>
-        <Modal.Title>Удалить канал</Modal.Title>
+        <Modal.Title>{t("modal.titleDeleteChannel")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p className="lead">Уверены?</p>
+        <p className="lead">{t("modal.subTitle")}</p>
 
         <div className="d-flex justify-content-end">
           <Button
@@ -112,14 +115,14 @@ const RemoveChannel = ({ hideModal }) => {
             variant="secondary"
             onClick={hideModal}
           >
-            Отменить
+            {t("modal.buttonCancel")}
           </Button>
           <Button
             variant="danger"
             type="button"
             onClick={() => handleRemoveChannel(channelId)}
           >
-            Удалить
+            {t("modal.buttonDelete")}
           </Button>
         </div>
       </Modal.Body>
@@ -127,7 +130,8 @@ const RemoveChannel = ({ hideModal }) => {
   );
 };
 
-const RenameChannel = ({ hideModal }) => {
+const RenameChannel = ({ handleStatus, hideModal }) => {
+  const { t } = useTranslation();
   const channels = useSelector(getChannels);
   const channelId = useSelector(getChannelId);
   const channelsName = Object.values(channels.entities).map(
@@ -147,17 +151,18 @@ const RenameChannel = ({ hideModal }) => {
     initialValues: {
       name: currentChannel.name,
     },
-    validationSchema: getValidationShema(channelsName),
+    validationSchema: getValidationShema(channelsName, t),
     onSubmit: (values) => {
       const newChannel = { id: channelId, name: values.name };
-      chatApi.renameChannel(newChannel);
-      hideModal();
+      chatApi.renameChannel(newChannel, handleStatus);
     },
+    validateOnBlur: false,
+    validateOnChange: false,
   });
   return (
     <Modal show centered onHide={hideModal}>
       <Modal.Header closeButton>
-        <Modal.Title>Переименовать канал</Modal.Title>
+        <Modal.Title>{t("modal.titleRenameChannel")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
@@ -173,7 +178,7 @@ const RenameChannel = ({ hideModal }) => {
               isInvalid={!formik.isValid}
             />
             <Form.Label className="visually-hidden" htmlFor="name">
-              Имя канала
+              {t("modal.channelNameLabel")}
             </Form.Label>
 
             <Form.Control.Feedback type="invalid">
@@ -187,9 +192,9 @@ const RenameChannel = ({ hideModal }) => {
               variant="secondary"
               onClick={hideModal}
             >
-              Отменить
+              {t("modal.buttonCancel")}
             </Button>
-            <Button type="submit">Отправить</Button>
+            <Button type="submit">{t("modal.buttonSend")}</Button>
           </Form.Group>
         </Form>
       </Modal.Body>
@@ -198,7 +203,7 @@ const RenameChannel = ({ hideModal }) => {
 };
 
 const Component = (props) => {
-  const { type, hideModal } = props;
+  const { type, handleStatus, hideModal } = props;
 
   const modals = {
     adding: AddChannel,
@@ -207,14 +212,22 @@ const Component = (props) => {
   };
   const CurrentComponent = modals[type];
 
-  return <CurrentComponent hideModal={hideModal} />;
+  return <CurrentComponent handleStatus={handleStatus} hideModal={hideModal} />;
 };
 
 const ModalComponent = (props) => {
-  const { hideModal } = props;
+  const { handleStatus, hideModal } = props;
   const type = useSelector(getTypeModal);
 
-  return type && <Component type={type} hideModal={hideModal} />;
+  return (
+    type && (
+      <Component
+        type={type}
+        handleStatus={handleStatus}
+        hideModal={hideModal}
+      />
+    )
+  );
 };
 
 export default ModalComponent;

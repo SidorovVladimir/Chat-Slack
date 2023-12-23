@@ -1,6 +1,8 @@
+// import React, { useRef, useEffect } from "react";
 import React from "react";
 import { useSelector } from "react-redux";
 import { Col } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
 import {
   getCurrentChannelId,
   getMessages,
@@ -9,6 +11,7 @@ import {
 import MessageForm from "./MessageForm";
 
 const Header = () => {
+  const { t } = useTranslation();
   const messages = useSelector(getMessages);
   const channels = useSelector(getChannels);
   const channelId = useSelector(getCurrentChannelId);
@@ -24,12 +27,21 @@ const Header = () => {
       <p className="m-0">
         <b>{`# ${currentChannel?.name}`}</b>
       </p>
-      <span className="text-muted">{`${currentChannelMessages.length} message`}</span>
+      {/* <span className="text-muted">{`${currentChannelMessages.length} message`}</span> */}
+      <span className="text-muted">
+        {`${currentChannelMessages.length} ${t("chat.messageCount", {
+          count: currentChannelMessages.length,
+        })}`}
+      </span>
     </div>
   );
 };
 
 const Body = () => {
+  // const lastMessage = useRef();
+  // useEffect(() => {
+  //   lastMessage.current?.scrollIntoView({ behavior: "smooth" });
+  // });
   const channelId = useSelector(getCurrentChannelId);
   const messages = useSelector(getMessages);
   const currentChannelMessages = Object.values(messages.entities).filter(
@@ -39,6 +51,7 @@ const Body = () => {
   return (
     <div id="messages-box" className="chat-messages overflow-auto px-5">
       {currentChannelMessages.map((message) => (
+        // <div ref={lastMessage} key={message.id} className="text-break mb-2">
         <div key={message.id} className="text-break mb-2">
           <b>{message.username}</b>
           {": "}
