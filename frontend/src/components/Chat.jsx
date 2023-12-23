@@ -1,5 +1,5 @@
-// import React, { useRef, useEffect } from "react";
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
+// import React from 'react';
 import { useSelector } from 'react-redux';
 import { Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
@@ -27,7 +27,6 @@ const Header = () => {
       <p className="m-0">
         <b>{`# ${currentChannel?.name}`}</b>
       </p>
-      {/* <span className="text-muted">{`${currentChannelMessages.length} message`}</span> */}
       <span className="text-muted">
         {`${currentChannelMessages.length} ${t('chat.messageCount', {
           count: currentChannelMessages.length,
@@ -38,26 +37,33 @@ const Header = () => {
 };
 
 const Body = () => {
-  // const lastMessage = useRef();
-  // useEffect(() => {
-  //   lastMessage.current?.scrollIntoView({ behavior: "smooth" });
-  // });
+  const lastMessage = useRef(null);
   const channelId = useSelector(getCurrentChannelId);
   const messages = useSelector(getMessages);
   const currentChannelMessages = Object.values(messages.entities).filter(
     (msg) => msg.channelId === channelId,
   );
+  //  Не срабатывает скролл на последнее сообщение канала при переключении каналов
+
+  useEffect(() => {
+    if (lastMessage.current) {
+      lastMessage.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [currentChannelMessages.length, channelId]);
 
   return (
     <div id="messages-box" className="chat-messages overflow-auto px-5">
-      {currentChannelMessages.map((message) => (
-        // <div ref={lastMessage} key={message.id} className="text-break mb-2">
-        <div key={message.id} className="text-break mb-2">
-          <b>{message.username}</b>
-          {': '}
-          {message.body}
-        </div>
-      ))}
+      {currentChannelMessages.map((message, index) => {
+        const isLastMessage = index === currentChannelMessages.length - 1;
+
+        return (
+          <div ref={isLastMessage ? lastMessage : null} key={message.id} className="text-break mb-2">
+            <b>{message.username}</b>
+            {': '}
+            {message.body}
+          </div>
+        );
+      })}
     </div>
   );
 };
