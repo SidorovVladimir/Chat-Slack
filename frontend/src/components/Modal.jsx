@@ -11,21 +11,20 @@ import {
   getChannelId,
 } from '../slices/selectors.js';
 
-const getValidationShema = (channel, t) =>
-  Yup.object().shape({
-    name: Yup.string()
-      .trim()
-      .required(t('validate.required'))
-      .min(3, t('validate.min_max'))
-      .max(20, t('validate.min_max'))
-      .notOneOf(channel, t('validate.unique')),
-  });
+const getValidationShema = (channel, t) => Yup.object().shape({
+  name: Yup.string()
+    .trim()
+    .required(t('validate.required'))
+    .min(3, t('validate.min_max'))
+    .max(20, t('validate.min_max'))
+    .notOneOf(channel, t('validate.unique')),
+});
 
 const AddChannel = ({ handleStatus, hideModal }) => {
   const { t } = useTranslation();
   const channels = useSelector(getChannels);
   const channelsName = Object.values(channels.entities).map(
-    (channel) => channel.name
+    (channel) => channel.name,
   );
   const inputRef = useRef();
 
@@ -135,7 +134,7 @@ const RenameChannel = ({ handleStatus, hideModal }) => {
   const channels = useSelector(getChannels);
   const channelId = useSelector(getChannelId);
   const channelsName = Object.values(channels.entities).map(
-    (channel) => channel.name
+    (channel) => channel.name,
   );
   const currentChannel = channels.entities[channelId];
 

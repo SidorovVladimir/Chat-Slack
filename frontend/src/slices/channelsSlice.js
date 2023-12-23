@@ -14,7 +14,7 @@ export const fetchContent = createAsyncThunk(
       headers: header,
     });
     return data;
-  }
+  },
 );
 
 const channelsAdapter = createEntityAdapter();
@@ -40,7 +40,11 @@ const channelsSlice = createSlice({
     });
   },
 });
-export const { setCurrentChannel, addChannel, removeChannel, renameChannel } =
-  channelsSlice.actions;
+export const {
+  setCurrentChannel,
+  addChannel,
+  removeChannel,
+  renameChannel,
+} = channelsSlice.actions;
 
 export default channelsSlice.reducer;

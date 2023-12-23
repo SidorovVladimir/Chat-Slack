@@ -16,10 +16,10 @@ const Header = () => {
   const channels = useSelector(getChannels);
   const channelId = useSelector(getCurrentChannelId);
   const currentChannel = Object.values(channels.entities).find(
-    ({ id }) => id === channelId
+    ({ id }) => id === channelId,
   );
   const currentChannelMessages = Object.values(messages.entities).filter(
-    (msg) => msg.channelId === channelId
+    (msg) => msg.channelId === channelId,
   );
 
   return (
@@ -45,7 +45,7 @@ const Body = () => {
   const channelId = useSelector(getCurrentChannelId);
   const messages = useSelector(getMessages);
   const currentChannelMessages = Object.values(messages.entities).filter(
-    (msg) => msg.channelId === channelId
+    (msg) => msg.channelId === channelId,
   );
 
   return (

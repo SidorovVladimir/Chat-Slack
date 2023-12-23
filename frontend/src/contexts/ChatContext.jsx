@@ -46,7 +46,7 @@ const ChatProvider = ({ children }) => {
         } else {
           cb(res);
         }
-      }
+      },
     );
   };
 

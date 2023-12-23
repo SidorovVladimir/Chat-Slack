@@ -61,7 +61,7 @@ const SignupForm = () => {
       try {
         const response = await axios.post(
           routes.registrationPath(),
-          registrationData
+          registrationData,
         );
         logIn(response);
         navigate(routes.chatPagePath());
@@ -94,8 +94,8 @@ const SignupForm = () => {
           id="username"
           value={formik.values.username}
           isInvalid={
-            (formik.touched.username && formik.errors.username) ||
-            registrationFailed
+            (formik.touched.username && formik.errors.username)
+            || registrationFailed
           }
         />
         <Form.Label htmlFor="username">{t('signup.labelName')}</Form.Label>
@@ -116,8 +116,8 @@ const SignupForm = () => {
           id="password"
           value={formik.values.password}
           isInvalid={
-            (formik.touched.password && formik.errors.password) ||
-            registrationFailed
+            (formik.touched.password && formik.errors.password)
+            || registrationFailed
           }
         />
         <Form.Control.Feedback type="invalid" tooltip>
@@ -138,8 +138,8 @@ const SignupForm = () => {
           id="confirmPassword"
           value={formik.values.confirmPassword}
           isInvalid={
-            (formik.touched.confirmPassword && formik.errors.confirmPassword) ||
-            registrationFailed
+            (formik.touched.confirmPassword && formik.errors.confirmPassword)
+            || registrationFailed
           }
         />
         <Form.Control.Feedback type="invalid" tooltip>

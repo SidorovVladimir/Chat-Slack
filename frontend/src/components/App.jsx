@@ -1,5 +1,10 @@
 import React from 'react';
-import { Route, Routes, BrowserRouter, Navigate } from 'react-router-dom';
+import {
+  Route,
+  Routes,
+  BrowserRouter,
+  Navigate,
+} from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import useAuth from '../hooks/useAuth.jsx';
 import routes from '../routes.js';
@@ -29,11 +34,11 @@ const App = () => (
             <Route path={routes.notPagePath()} element={<NotFound />} />
             <Route
               path="/"
-              element={
+              element={(
                 <AuthMain>
                   <MainPage />
                 </AuthMain>
-              }
+              )}
             />
           </Routes>
         </div>

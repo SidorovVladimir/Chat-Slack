@@ -1,6 +1,11 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Col, Button, Dropdown, ButtonGroup } from 'react-bootstrap';
+import {
+  Col,
+  Button,
+  Dropdown,
+  ButtonGroup,
+} from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import {
@@ -15,7 +20,12 @@ import { closeModal, openModal } from '../slices/modalsSlice';
 import ModalComponent from './Modal.jsx';
 import useChat from '../hooks/useChat';
 
-const Channel = ({ channels, channel, showModal, handleSetCurrenChannel }) => {
+const Channel = ({
+  channels,
+  channel,
+  showModal,
+  handleSetCurrenChannel,
+}) => {
   const { t } = useTranslation();
   const variant = channel.id === channels.currentChannelId ? 'secondary' : '';
 
