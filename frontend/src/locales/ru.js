@@ -35,7 +35,7 @@ export default {
       rename: "Переименовать",
       channelControl: "Управление каналом",
       channelCreated: "Канал создан",
-      channelRemoved: "Канал удален",
+      channelRemoved: "Канал удалён",
       channelRenamed: "Канал переименован",
     },
     modal: {

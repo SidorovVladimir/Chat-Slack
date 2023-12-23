@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
+import { useRollbar } from "@rollbar/react";
 import {
   Container,
   Row,
@@ -19,6 +20,7 @@ import routes from "../routes.js";
 import img from "../assets/imageSignupPage.jpg";
 
 const SignupForm = () => {
+  const rollbar = useRollbar();
   const { t } = useTranslation();
   const { logIn } = useAuth();
   const navigate = useNavigate();
@@ -64,6 +66,7 @@ const SignupForm = () => {
         logIn(response);
         navigate(routes.chatPagePath());
       } catch (err) {
+        rollbar.error(err);
         if (err.message === "Network Error") {
           toast.error(t("errors.networkError"));
         }
