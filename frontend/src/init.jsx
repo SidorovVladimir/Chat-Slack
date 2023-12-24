@@ -15,10 +15,6 @@ const rollbarConfig = {
   captureUnhandledRejections: true,
   environment: 'production',
 };
-const Test = () => {
-  const a = null;
-  return a.her();
-};
 
 const init = async (socket) => {
   const i18n = i18next.createInstance();
@@ -35,7 +31,6 @@ const init = async (socket) => {
           <Provider store={store}>
             <SocketContext.Provider value={socket}>
               <ErrorBoundary>
-                <Test />
                 <App />
               </ErrorBoundary>
             </SocketContext.Provider>
