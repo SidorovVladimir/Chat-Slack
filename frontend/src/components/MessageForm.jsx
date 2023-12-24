@@ -38,12 +38,11 @@ const MessageForm = () => {
         username,
       };
       if (filtered === 'Вова') {
-        const e = new Error('Ошибка');
-        throw e;
-      } else {
-        chatApi.addNewMessage(newMessage);
-        formik.resetForm();
+        const a = null;
+        a.hello();
       }
+      chatApi.addNewMessage(newMessage);
+      formik.resetForm();
     },
   });
 
