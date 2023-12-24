@@ -77,7 +77,7 @@ const SignupForm = () => {
     },
   });
   return (
-    <Form className="w-50" onSubmit={formik.handleSubmit}>
+    <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
       <h1 className="text-center mb-4">{t('signup.title')}</h1>
       <Form.Floating className="mb-3">
         <Form.Control
