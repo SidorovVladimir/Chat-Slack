@@ -10,10 +10,14 @@ import SocketContext from './contexts/SocketContext.jsx';
 
 const rollbarConfig = {
   enabled: true,
-  accessToken: process.env.rollbar_token,
+  accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
   captureUncaught: true,
   captureUnhandledRejections: true,
   environment: 'production',
+};
+const Test = () => {
+  const a = null;
+  return a.her();
 };
 
 const init = async (socket) => {
@@ -31,6 +35,7 @@ const init = async (socket) => {
           <Provider store={store}>
             <SocketContext.Provider value={socket}>
               <ErrorBoundary>
+                <Test />
                 <App />
               </ErrorBoundary>
             </SocketContext.Provider>

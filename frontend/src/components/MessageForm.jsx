@@ -37,10 +37,6 @@ const MessageForm = () => {
         channelId,
         username,
       };
-      if (filtered === 'Вова') {
-        const a = null;
-        a.hello();
-      }
       chatApi.addNewMessage(newMessage);
       formik.resetForm();
     },
