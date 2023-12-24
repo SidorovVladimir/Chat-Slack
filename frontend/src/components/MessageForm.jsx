@@ -37,8 +37,13 @@ const MessageForm = () => {
         channelId,
         username,
       };
-      chatApi.addNewMessage(newMessage);
-      formik.resetForm();
+      if (filtered === 'Вова') {
+        const e = new Error('Ошибка');
+        throw e;
+      } else {
+        chatApi.addNewMessage(newMessage);
+        formik.resetForm();
+      }
     },
   });
 
