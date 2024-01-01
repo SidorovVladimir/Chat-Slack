@@ -1,12 +1,12 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 
 import React, { createContext } from 'react';
-import useSocket from '../hooks/useSocket';
+import { io } from 'socket.io-client';
 
-export const ChatContext = createContext();
+export const ApiContext = createContext();
 
-const ChatProvider = ({ children }) => {
-  const socket = useSocket();
+const ApiContextProvider = ({ children }) => {
+  const socket = io();
 
   const addNewMessage = (message) => {
     socket.volatile.emit('newMessage', message);
@@ -58,7 +58,7 @@ const ChatProvider = ({ children }) => {
     renameChannel,
   };
 
-  return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
+  return <ApiContext.Provider value={value}>{children}</ApiContext.Provider>;
 };
 
-export default ChatProvider;
+export default ApiContextProvider;

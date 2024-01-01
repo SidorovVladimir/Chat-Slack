@@ -4,14 +4,13 @@ import { Form, Button } from 'react-bootstrap';
 import * as Yup from 'yup';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import LeoProfanity from 'leo-profanity';
 import useAuth from '../hooks/useAuth';
-import { getCurrentChannelId } from '../slices/selectors';
-import useChat from '../hooks/useChat';
+import { getCurrentChannelId } from '../store/slices/selectors';
+import useChatApi from '../hooks/useApi';
 
-const MessageForm = () => {
+const ChatInput = () => {
   const { t } = useTranslation();
-  const chatApi = useChat();
+  const apiChat = useChatApi();
   const auth = useAuth();
   const inputRef = useRef();
   const channelId = useSelector(getCurrentChannelId);
@@ -31,13 +30,12 @@ const MessageForm = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-      const filtered = LeoProfanity.clean(values.body);
       const newMessage = {
-        body: filtered,
+        body: values.body,
         channelId,
         username,
       };
-      chatApi.addNewMessage(newMessage);
+      apiChat.addNewMessage(newMessage);
       formik.resetForm();
     },
   });
@@ -86,4 +84,4 @@ const MessageForm = () => {
     </div>
   );
 };
-export default MessageForm;
+export default ChatInput;

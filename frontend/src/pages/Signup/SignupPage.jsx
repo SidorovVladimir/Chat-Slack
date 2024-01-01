@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 import {
   Container,
   Row,
@@ -10,13 +9,13 @@ import {
   Form,
   Button,
 } from 'react-bootstrap';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import useAuth from '../hooks/useAuth.jsx';
-import routes from '../routes.js';
-import img from '../assets/imageSignupPage.jpg';
+import api from '../../api/index.js';
+import useAuth from '../../hooks/useAuth.jsx';
+import routes from '../../utils/routes.js';
+import img from '../../assets/signup.jpg';
 
 const SignupForm = () => {
   const { t } = useTranslation();
@@ -57,16 +56,13 @@ const SignupForm = () => {
         password: values.password,
       };
       try {
-        const response = await axios.post(
-          routes.registrationPath(),
+        const response = await api.post(
+          routes.signup(),
           registrationData,
         );
         logIn(response);
-        navigate(routes.chatPagePath());
+        navigate(routes.chatPage());
       } catch (err) {
-        if (err.message === 'Network Error') {
-          toast.error(t('errors.networkError'));
-        }
         if (err.response.status === 409) {
           setRegistrationFailed(true);
           inputRef.current.select();
@@ -164,7 +160,7 @@ const SignupPage = () => {
           <Card className="shadow-sm">
             <Card.Body className="d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
               <div>
-                <Image src={img} roundedCircle alt={t('signup.title')} />
+                <Image src={img} alt={t('signup.title')} />
               </div>
               <SignupForm />
             </Card.Body>

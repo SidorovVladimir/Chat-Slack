@@ -4,12 +4,14 @@ import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import * as Yup from 'yup';
 import { Modal, Button, Form } from 'react-bootstrap';
-import useChat from '../hooks/useChat.jsx';
+import useChat from '../hooks/useApi.jsx';
+import useAuth from '../hooks/useAuth.jsx';
 import {
-  getChannels,
   getTypeModal,
   getChannelId,
-} from '../slices/selectors.js';
+  getChannelsName,
+  getCurrentChannel,
+} from '../store/slices/selectors.js';
 
 const getValidationShema = (channel, t) => Yup.object().shape({
   name: Yup.string()
@@ -22,13 +24,11 @@ const getValidationShema = (channel, t) => Yup.object().shape({
 
 const AddChannel = ({ handleStatus, hideModal }) => {
   const { t } = useTranslation();
-  const channels = useSelector(getChannels);
-  const channelsName = Object.values(channels.entities).map(
-    (channel) => channel.name,
-  );
+  const channelsName = useSelector(getChannelsName);
   const inputRef = useRef();
+  const { currentUser } = useAuth();
 
-  const chatApi = useChat();
+  const { addNewChannel } = useChat();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -40,8 +40,8 @@ const AddChannel = ({ handleStatus, hideModal }) => {
     },
     validationSchema: getValidationShema(channelsName, t),
     onSubmit: (values) => {
-      const newNameChannel = { name: values.name };
-      chatApi.addNewChannel(newNameChannel, handleStatus);
+      const newNameChannel = { name: values.name, author: currentUser };
+      addNewChannel(newNameChannel, handleStatus);
     },
     validateOnBlur: false,
     validateOnChange: false,
@@ -92,11 +92,11 @@ const AddChannel = ({ handleStatus, hideModal }) => {
 
 const RemoveChannel = ({ handleStatus, hideModal }) => {
   const { t } = useTranslation();
-  const chatApi = useChat();
+  const { removeChannel } = useChat();
   const channelId = useSelector(getChannelId);
 
   const handleRemoveChannel = (id) => {
-    chatApi.removeChannel(id, handleStatus);
+    removeChannel(id, handleStatus);
   };
 
   return (
@@ -131,16 +131,13 @@ const RemoveChannel = ({ handleStatus, hideModal }) => {
 
 const RenameChannel = ({ handleStatus, hideModal }) => {
   const { t } = useTranslation();
-  const channels = useSelector(getChannels);
+  const currentChannel = useSelector(getCurrentChannel);
   const channelId = useSelector(getChannelId);
-  const channelsName = Object.values(channels.entities).map(
-    (channel) => channel.name,
-  );
-  const currentChannel = channels.entities[channelId];
+  const channelsName = useSelector(getChannelsName);
 
   const inputRef = useRef();
 
-  const chatApi = useChat();
+  const { renameChannel } = useChat();
 
   useEffect(() => {
     inputRef.current.select();
@@ -153,7 +150,7 @@ const RenameChannel = ({ handleStatus, hideModal }) => {
     validationSchema: getValidationShema(channelsName, t),
     onSubmit: (values) => {
       const newChannel = { id: channelId, name: values.name };
-      chatApi.renameChannel(newChannel, handleStatus);
+      renameChannel(newChannel, handleStatus);
     },
     validateOnBlur: false,
     validateOnChange: false,

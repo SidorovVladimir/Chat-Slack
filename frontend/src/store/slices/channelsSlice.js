@@ -1,18 +1,16 @@
 /* eslint-disable no-param-reassign */
-import axios from 'axios';
 import {
   createSlice,
   createAsyncThunk,
   createEntityAdapter,
 } from '@reduxjs/toolkit';
-import routes from '../routes.js';
+import api from '../../api/index.js';
+import routes from '../../utils/routes.js';
 
 export const fetchContent = createAsyncThunk(
   'channels/fetchContent',
-  async (header) => {
-    const { data } = await axios.get(routes.usersPath(), {
-      headers: header,
-    });
+  async () => {
+    const { data } = await api.get(routes.usersData());
     return data;
   },
 );

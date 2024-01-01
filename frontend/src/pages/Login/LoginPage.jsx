@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 import {
   Container,
   Row,
@@ -10,12 +9,12 @@ import {
   Form,
   Button,
 } from 'react-bootstrap';
-import axios from 'axios';
 import { useFormik } from 'formik';
-import { useNavigate } from 'react-router-dom';
-import useAuth from '../hooks/useAuth.jsx';
-import routes from '../routes.js';
-import img from '../assets/imageLoginPage.jpeg';
+import { useNavigate, NavLink } from 'react-router-dom';
+import api from '../../api/index.js';
+import useAuth from '../../hooks/useAuth.jsx';
+import routes from '../../utils/routes.js';
+import img from '../../assets/login.jpg';
 
 const LoginForm = () => {
   const { t } = useTranslation();
@@ -36,13 +35,10 @@ const LoginForm = () => {
     onSubmit: async (values) => {
       setAuthFailed(false);
       try {
-        const response = await axios.post(routes.loginPath(), values);
+        const response = await api.post(routes.login(), values);
         logIn(response);
-        navigate(routes.chatPagePath());
+        navigate(routes.chatPage());
       } catch (err) {
-        if (err.message === 'Network Error') {
-          toast.error(t('errors.networkError'));
-        }
         if (err.isAxiosError && err.response.status === 401) {
           setAuthFailed(true);
           inputRef.current.select();
@@ -114,7 +110,7 @@ const LoginPage = () => {
             <Card.Footer className="p-4">
               <div className="text-center">
                 <span>{t('login.noAccount')}</span>
-                <a href="/signup">{t('login.signup')}</a>
+                <NavLink to={routes.signup()}>{t('login.signup')}</NavLink>
               </div>
             </Card.Footer>
           </Card>

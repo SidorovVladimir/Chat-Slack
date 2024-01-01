@@ -3,6 +3,7 @@ export default {
     navbar: {
       title: 'Hexlet Chat',
       button: 'Выйти',
+      language: 'Язык',
     },
     chat: {
       messageCount_zero: 'сообщений',
