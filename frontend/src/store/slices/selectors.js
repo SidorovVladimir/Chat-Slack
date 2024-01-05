@@ -4,6 +4,8 @@ export const getCurrentChannelId = (state) => state.channels.currentChannelId;
 
 export const getChannels = (state) => state.channels;
 
+export const getLoadingStatus = (state) => state.channels.loadingStatus;
+
 export const getMessages = (state) => state.messages;
 
 export const getTypeModal = (state) => state.modal.type;

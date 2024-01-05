@@ -8,6 +8,7 @@ export default {
     chat: {
       messageCount_one: 'message',
       messageCount_other: 'messages',
+      loading: 'Loading...',
     },
     notFound: {
       title: 'Page not found',

@@ -10,6 +10,7 @@ export default {
       messageCount_one: 'сообщение',
       messageCount_few: 'сообщения',
       messageCount_many: 'сообщений',
+      loading: 'Загрузка...',
     },
     notFound: {
       title: 'Страница не найдена',
