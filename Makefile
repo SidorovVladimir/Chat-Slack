@@ -4,17 +4,17 @@ install:
 start-frontend:
 	make -C frontend start
 
-# start-backend:
-# 	npx start-server
+start-backend:
+	npx start-server
 
 build:
 	npm run build
 
 start:
-	npx start-server
+	npm run start
 
-# start:
-# 	make start-backend & make start-frontend
+start-develop:
+	make start-backend & make start-frontend
 
 lint-frontend:
 	make -C frontend lint
