@@ -24,7 +24,7 @@ const Channel = (props) => {
         <Dropdown as={ButtonGroup} className="d-flex">
           <Button
             variant={variant}
-            className="w-100 rounded-0 text-start btn text-truncate"
+            className="w-100 rounded-0 text-start text-truncate"
             onClick={() => handleSetCurrenChannel(channel.id)}
           >
             <span className="me-1">#</span>
