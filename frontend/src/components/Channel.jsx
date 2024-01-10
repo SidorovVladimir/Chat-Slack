@@ -5,7 +5,6 @@ import {
   ButtonGroup,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import LeoProfanity from 'leo-profanity';
 
 const Channel = (props) => {
   const {
@@ -16,10 +15,9 @@ const Channel = (props) => {
   } = props;
   const { t } = useTranslation();
   const variant = channel.id === currentChannelId ? 'secondary' : null;
-  const filteredChannel = LeoProfanity.clean(channel.name);
 
   return (
-    <li key={channel.id} className="nav-item w-100">
+    <li className="nav-item w-100">
       {channel.removable ? (
         <Dropdown as={ButtonGroup} className="d-flex">
           <Button
@@ -28,7 +26,7 @@ const Channel = (props) => {
             onClick={() => handleSetCurrenChannel(channel.id)}
           >
             <span className="me-1">#</span>
-            {filteredChannel}
+            {channel.name}
           </Button>
           <Dropdown.Toggle split variant={variant} className="flex-grow-0">
             <span className="visually-hidden">
@@ -51,7 +49,7 @@ const Channel = (props) => {
           onClick={() => handleSetCurrenChannel(channel.id)}
         >
           <span className="me-1">#</span>
-          {filteredChannel}
+          {channel.name}
         </Button>
       )}
     </li>

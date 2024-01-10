@@ -26,7 +26,7 @@ const App = () => (
             <Routes>
               <Route path={routes.login()} element={<LoginPage />} />
               <Route path={routes.signup()} element={<SignupPage />} />
-              <Route path={routes.notPage()} element={<NotFound />} />
+              <Route path="*" element={<NotFound />} />
               <Route
                 path={routes.chatPage()}
                 element={(

@@ -1,17 +1,11 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  Col,
-  Button,
-} from 'react-bootstrap';
+import { Col, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import {
-  setCurrentChannel,
-} from '../store/slices/channelsSlice';
+import { setCurrentChannel } from '../store/slices/channelsSlice';
 import { getChannels, getCurrentChannelId } from '../store/slices/selectors';
-import { closeModal, openModal } from '../store/slices/modalsSlice';
-import ModalComponent from './Modal.jsx';
+import { openModal } from '../store/slices/modalsSlice';
+import Modal from './Modal/Modal.jsx';
 import Channel from '../components/Channel.jsx';
 
 const Channels = () => {
@@ -26,22 +20,6 @@ const Channels = () => {
 
   const showModal = (type, id = null) => {
     dispatch(openModal({ type, id }));
-  };
-  const hideModal = () => {
-    dispatch(closeModal());
-  };
-
-  const handleStatus = ({ status }) => {
-    switch (status) {
-      case 'Network error':
-        toast.error(t('errors.networkError'));
-        break;
-      case 'ok':
-        hideModal();
-        break;
-      default:
-        toast.error(t('errors.unknownError'));
-    }
   };
 
   return (
@@ -83,7 +61,7 @@ const Channels = () => {
           />
         ))}
       </ul>
-      <ModalComponent handleStatus={handleStatus} hideModal={hideModal} />
+      <Modal />
     </Col>
   );
 };

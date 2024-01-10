@@ -3,5 +3,4 @@ export default {
   usersData: () => '/data',
   signup: () => '/signup',
   chatPage: () => '/',
-  notPage: () => '*',
 };

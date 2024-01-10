@@ -11,11 +11,11 @@ import {
 } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import api from '../../api/index.js';
 import useAuth from '../../hooks/useAuth.jsx';
 import routes from '../../utils/routes.js';
 import img from '../../assets/signup.jpg';
+import { getSignupSchema } from '../../utils/validationShemas.js';
 
 const SignupForm = () => {
   const { t } = useTranslation();
@@ -28,27 +28,13 @@ const SignupForm = () => {
     inputRef.current.focus();
   }, []);
 
-  const signupSchema = Yup.object().shape({
-    username: Yup.string()
-      .required(t('validate.required'))
-      .trim()
-      .min(3, t('validate.min_max'))
-      .max(20, t('validate.min_max')),
-    password: Yup.string()
-      .min(6, t('validate.passwordMin'))
-      .trim()
-      .required(t('validate.required')),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref('password'), null], t('validate.mustMatch'))
-      .required(t('validate.required')),
-  });
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
       confirmPassword: '',
     },
-    validationSchema: signupSchema,
+    validationSchema: getSignupSchema(t),
     onSubmit: async (values) => {
       setRegistrationFailed(false);
       const registrationData = {

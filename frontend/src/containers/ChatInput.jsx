@@ -1,42 +1,44 @@
 import React, { useRef, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { Form, Button } from 'react-bootstrap';
-import * as Yup from 'yup';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import LeoProfanity from 'leo-profanity';
 import useAuth from '../hooks/useAuth';
 import { getCurrentChannelId } from '../store/slices/selectors';
 import useChatApi from '../hooks/useApi';
+import { chatInputSchema } from '../utils/validationShemas';
 
 const ChatInput = () => {
   const { t } = useTranslation();
   const apiChat = useChatApi();
-  const auth = useAuth();
+  const { currentUser: username } = useAuth();
   const inputRef = useRef();
   const channelId = useSelector(getCurrentChannelId);
+
+  const handleStatus = ({ status }, resetForm) => {
+    if (status === 'ok') {
+      resetForm();
+    }
+  };
 
   useEffect(() => {
     inputRef.current.focus();
   }, [channelId]);
 
-  const username = auth.currentUser;
-  const validationSchema = Yup.object().shape({
-    body: Yup.string().trim().required(),
-  });
-
   const formik = useFormik({
     initialValues: {
       body: '',
     },
-    validationSchema,
+    validationSchema: chatInputSchema,
     onSubmit: (values) => {
+      const filteredMessage = LeoProfanity.clean(values.body);
       const newMessage = {
-        body: values.body,
+        body: filteredMessage,
         channelId,
         username,
       };
-      apiChat.addNewMessage(newMessage);
-      formik.resetForm();
+      apiChat.addNewMessage(newMessage, handleStatus, formik.resetForm);
     },
   });
 
@@ -44,7 +46,6 @@ const ChatInput = () => {
     <div className="mt-auto px-5 py-3">
       <Form
         onSubmit={formik.handleSubmit}
-        noValidate
         className="py-1 border rounded-2"
       >
         <div className="input-group has-validation">
