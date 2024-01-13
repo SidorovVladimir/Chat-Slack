@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { Modal, Button, Form } from 'react-bootstrap';
@@ -8,20 +7,20 @@ import { toast } from 'react-toastify';
 import useChat from '../../hooks/useApi.jsx';
 import useAuth from '../../hooks/useAuth.jsx';
 import { getChannelsName } from '../../store/slices/selectors.js';
-import { closeModal } from '../../store/slices/modalsSlice.js';
 import { getModalShema } from '../../utils/validationShemas.js';
+import { useDispatchCustom, closeModalCustom, useSelectorCustom } from '../../store/index.js';
 
 const AddChannel = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const channelsName = useSelector(getChannelsName);
+  const dispatch = useDispatchCustom();
+  const channelsName = useSelectorCustom(getChannelsName);
   const inputRef = useRef();
   const { currentUser } = useAuth();
 
   const { addNewChannel } = useChat();
 
   const hideModal = () => {
-    dispatch(closeModal());
+    dispatch(closeModalCustom());
   };
 
   const handleStatus = ({ status }) => {

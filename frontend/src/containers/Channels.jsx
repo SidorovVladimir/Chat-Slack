@@ -1,25 +1,25 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { Col, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { setCurrentChannel } from '../store/slices/channelsSlice';
 import { getChannels, getCurrentChannelId } from '../store/slices/selectors';
-import { openModal } from '../store/slices/modalsSlice';
 import Modal from './Modal/Modal.jsx';
 import Channel from '../components/Channel.jsx';
+import {
+  useSelectorCustom, useDispatchCustom, openModalCustom, setCurrentChannelCustom,
+} from '../store/index.js';
 
 const Channels = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const channels = useSelector(getChannels);
-  const currentChannelId = useSelector(getCurrentChannelId);
+  const dispatch = useDispatchCustom();
+  const channels = useSelectorCustom(getChannels);
+  const currentChannelId = useSelectorCustom(getCurrentChannelId);
 
   const handleSetCurrenChannel = (id) => {
-    dispatch(setCurrentChannel(id));
+    dispatch(setCurrentChannelCustom(id));
   };
 
   const showModal = (type, id = null) => {
-    dispatch(openModal({ type, id }));
+    dispatch(openModalCustom({ type, id }));
   };
 
   return (

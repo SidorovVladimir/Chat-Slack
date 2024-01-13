@@ -1,20 +1,20 @@
 import React, { useRef, useEffect } from 'react';
 import { useFormik } from 'formik';
 import { Form, Button } from 'react-bootstrap';
-import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import LeoProfanity from 'leo-profanity';
 import useAuth from '../hooks/useAuth';
 import { getCurrentChannelId } from '../store/slices/selectors';
 import useChatApi from '../hooks/useApi';
 import { chatInputSchema } from '../utils/validationShemas';
+import { useSelectorCustom } from '../store/index.js';
 
 const ChatInput = () => {
   const { t } = useTranslation();
   const apiChat = useChatApi();
   const { currentUser: username } = useAuth();
   const inputRef = useRef();
-  const channelId = useSelector(getCurrentChannelId);
+  const channelId = useSelectorCustom(getCurrentChannelId);
 
   const handleStatus = ({ status }, resetForm) => {
     if (status === 'ok') {

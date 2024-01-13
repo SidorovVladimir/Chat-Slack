@@ -2,38 +2,39 @@ import React, { useEffect } from 'react';
 import {
   Container, Row, Spinner, Button,
 } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import useChatApi from '../../hooks/useApi.jsx';
 import useAuth from '../../hooks/useAuth.jsx';
-import {
-  fetchContent,
-  setCurrentChannel,
-  addChannel,
-  removeChannel,
-  renameChannel,
-} from '../../store/slices/channelsSlice.js';
 import routes from '../../utils/routes.js';
-import { addMessage } from '../../store/slices/messagesSlice';
 import { getChannels, getLoadingStatus } from '../../store/slices/selectors';
 import Channels from '../../containers/Channels.jsx';
 import ChatWindow from '../../containers/ChatWindow.jsx';
+import {
+  useSelectorCustom,
+  useDispatchCustom,
+  addMessageCustom,
+  setCurrentChannelCustom,
+  addChannelCustom,
+  removeChannelCustom,
+  renameChannelCustom,
+  fetchContentCustom,
+} from '../../store/index.js';
 
 const ChatPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const apiChat = useChatApi();
   const { currentUser, logOut } = useAuth();
-  const dispatch = useDispatch();
-  const channels = useSelector(getChannels);
-  const loadingStatus = useSelector(getLoadingStatus);
+  const dispatch = useDispatchCustom();
+  const channels = useSelectorCustom(getChannels);
+  const loadingStatus = useSelectorCustom(getLoadingStatus);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        dispatch(fetchContent());
+        dispatch(fetchContentCustom());
       } catch (e) {
         logOut();
         navigate(routes.login());
@@ -44,26 +45,26 @@ const ChatPage = () => {
 
   useEffect(() => {
     const handleAddMessage = (payload) => {
-      dispatch(addMessage(payload));
+      dispatch(addMessageCustom(payload));
     };
 
     const handleAddChannel = (payload) => {
       toast.success(t('channelList.channelCreated'));
-      dispatch(addChannel(payload));
+      dispatch(addChannelCustom(payload));
       if (payload.author === currentUser) {
-        dispatch(setCurrentChannel(payload.id));
+        dispatch(setCurrentChannelCustom(payload.id));
       }
     };
     const handleRemoveChannel = (payload) => {
       toast.success(t('channelList.channelRemoved'));
-      dispatch(removeChannel(payload.id));
+      dispatch(removeChannelCustom(payload.id));
       if (payload.id === channels.currentChannelId) {
-        dispatch(setCurrentChannel(channels.defaultChannelId));
+        dispatch(setCurrentChannelCustom(channels.defaultChannelId));
       }
     };
     const handleRenameChannel = (payload) => {
       toast.success(t('channelList.channelRenamed'));
-      dispatch(renameChannel(payload));
+      dispatch(renameChannelCustom(payload));
     };
 
     apiChat.socket.on('newMessage', handleAddMessage);

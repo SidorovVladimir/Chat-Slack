@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Col } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import {
@@ -8,12 +7,13 @@ import {
 } from '../store/slices/selectors';
 import ChatInput from './ChatInput';
 import Message from '../components/Message';
+import { useSelectorCustom } from '../store/index.js';
 
 const ChatWindow = () => {
   const { t } = useTranslation();
   const lastMessage = useRef(null);
-  const currentChannelMessages = useSelector(getCurrentChannelMessages);
-  const currentChannel = useSelector(getCurrentChannel);
+  const currentChannelMessages = useSelectorCustom(getCurrentChannelMessages);
+  const currentChannel = useSelectorCustom(getCurrentChannel);
   useEffect(() => {
     if (lastMessage.current) {
       lastMessage.current.scrollIntoView({ behavior: 'instant' });

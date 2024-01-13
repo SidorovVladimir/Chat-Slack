@@ -1,5 +1,4 @@
 import React, { useRef, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -11,22 +10,22 @@ import {
   getChannelsName,
   getCurrentChannel,
 } from '../../store/slices/selectors.js';
-import { closeModal } from '../../store/slices/modalsSlice.js';
 import { getModalShema } from '../../utils/validationShemas.js';
+import { useSelectorCustom, useDispatchCustom, closeModalCustom } from '../../store/index.js';
 
 const RenameChannel = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const currentChannel = useSelector(getCurrentChannel);
-  const channelId = useSelector(getChannelId);
-  const channelsName = useSelector(getChannelsName);
+  const dispatch = useDispatchCustom();
+  const currentChannel = useSelectorCustom(getCurrentChannel);
+  const channelId = useSelectorCustom(getChannelId);
+  const channelsName = useSelectorCustom(getChannelsName);
 
   const inputRef = useRef();
 
   const { renameChannel } = useChat();
 
   const hideModal = () => {
-    dispatch(closeModal());
+    dispatch(closeModalCustom());
   };
 
   const handleStatus = ({ status }) => {
