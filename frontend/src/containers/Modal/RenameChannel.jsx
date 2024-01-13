@@ -11,21 +11,21 @@ import {
   getCurrentChannel,
 } from '../../store/slices/selectors.js';
 import { getModalShema } from '../../utils/validationShemas.js';
-import { useSelectorCustom, useDispatchCustom, closeModalCustom } from '../../store/index.js';
+import { useCustomSelector, useCustomDispatch, wrapCloseModal } from '../../store/index.js';
 
 const RenameChannel = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatchCustom();
-  const currentChannel = useSelectorCustom(getCurrentChannel);
-  const channelId = useSelectorCustom(getChannelId);
-  const channelsName = useSelectorCustom(getChannelsName);
+  const dispatch = useCustomDispatch();
+  const currentChannel = useCustomSelector(getCurrentChannel);
+  const channelId = useCustomSelector(getChannelId);
+  const channelsName = useCustomSelector(getChannelsName);
 
   const inputRef = useRef();
 
   const { renameChannel } = useChat();
 
   const hideModal = () => {
-    dispatch(closeModalCustom());
+    dispatch(wrapCloseModal());
   };
 
   const handleStatus = ({ status }) => {

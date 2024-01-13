@@ -12,14 +12,14 @@ import { getChannels, getLoadingStatus } from '../../store/slices/selectors';
 import Channels from '../../containers/Channels.jsx';
 import ChatWindow from '../../containers/ChatWindow.jsx';
 import {
-  useSelectorCustom,
-  useDispatchCustom,
-  addMessageCustom,
-  setCurrentChannelCustom,
-  addChannelCustom,
-  removeChannelCustom,
-  renameChannelCustom,
-  fetchContentCustom,
+  useCustomSelector,
+  useCustomDispatch,
+  wrapAddMessage,
+  wrapSetCurrentChannel,
+  wrapAddChannel,
+  wrapRemoveChannel,
+  wrapRenameChannel,
+  getContentFromServer,
 } from '../../store/index.js';
 
 const ChatPage = () => {
@@ -27,14 +27,14 @@ const ChatPage = () => {
   const navigate = useNavigate();
   const apiChat = useChatApi();
   const { currentUser, logOut } = useAuth();
-  const dispatch = useDispatchCustom();
-  const channels = useSelectorCustom(getChannels);
-  const loadingStatus = useSelectorCustom(getLoadingStatus);
+  const dispatch = useCustomDispatch();
+  const channels = useCustomSelector(getChannels);
+  const loadingStatus = useCustomSelector(getLoadingStatus);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        dispatch(fetchContentCustom());
+        dispatch(getContentFromServer());
       } catch (e) {
         logOut();
         navigate(routes.login());
@@ -45,26 +45,26 @@ const ChatPage = () => {
 
   useEffect(() => {
     const handleAddMessage = (payload) => {
-      dispatch(addMessageCustom(payload));
+      dispatch(wrapAddMessage(payload));
     };
 
     const handleAddChannel = (payload) => {
       toast.success(t('channelList.channelCreated'));
-      dispatch(addChannelCustom(payload));
+      dispatch(wrapAddChannel(payload));
       if (payload.author === currentUser) {
-        dispatch(setCurrentChannelCustom(payload.id));
+        dispatch(wrapSetCurrentChannel(payload.id));
       }
     };
     const handleRemoveChannel = (payload) => {
       toast.success(t('channelList.channelRemoved'));
-      dispatch(removeChannelCustom(payload.id));
+      dispatch(wrapRemoveChannel(payload.id));
       if (payload.id === channels.currentChannelId) {
-        dispatch(setCurrentChannelCustom(channels.defaultChannelId));
+        dispatch(wrapSetCurrentChannel(channels.defaultChannelId));
       }
     };
     const handleRenameChannel = (payload) => {
       toast.success(t('channelList.channelRenamed'));
-      dispatch(renameChannelCustom(payload));
+      dispatch(wrapRenameChannel(payload));
     };
 
     apiChat.socket.on('newMessage', handleAddMessage);

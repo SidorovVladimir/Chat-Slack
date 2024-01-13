@@ -5,21 +5,21 @@ import { getChannels, getCurrentChannelId } from '../store/slices/selectors';
 import Modal from './Modal/Modal.jsx';
 import Channel from '../components/Channel.jsx';
 import {
-  useSelectorCustom, useDispatchCustom, openModalCustom, setCurrentChannelCustom,
+  useCustomSelector, useCustomDispatch, wrapOpenModal, wrapSetCurrentChannel,
 } from '../store/index.js';
 
 const Channels = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatchCustom();
-  const channels = useSelectorCustom(getChannels);
-  const currentChannelId = useSelectorCustom(getCurrentChannelId);
+  const dispatch = useCustomDispatch();
+  const channels = useCustomSelector(getChannels);
+  const currentChannelId = useCustomSelector(getCurrentChannelId);
 
   const handleSetCurrenChannel = (id) => {
-    dispatch(setCurrentChannelCustom(id));
+    dispatch(wrapSetCurrentChannel(id));
   };
 
   const showModal = (type, id = null) => {
-    dispatch(openModalCustom({ type, id }));
+    dispatch(wrapOpenModal({ type, id }));
   };
 
   return (

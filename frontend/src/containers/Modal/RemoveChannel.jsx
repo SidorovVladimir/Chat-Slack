@@ -4,16 +4,16 @@ import { Modal, Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import useChat from '../../hooks/useApi.jsx';
 import { getChannelId } from '../../store/slices/selectors.js';
-import { useSelectorCustom, useDispatchCustom, closeModalCustom } from '../../store/index.js';
+import { useCustomSelector, useCustomDispatch, wrapCloseModal } from '../../store/index.js';
 
 const RemoveChannel = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatchCustom();
+  const dispatch = useCustomDispatch();
   const { removeChannel } = useChat();
-  const channelId = useSelectorCustom(getChannelId);
+  const channelId = useCustomSelector(getChannelId);
 
   const hideModal = () => {
-    dispatch(closeModalCustom());
+    dispatch(wrapCloseModal());
   };
 
   const handleStatus = ({ status }) => {

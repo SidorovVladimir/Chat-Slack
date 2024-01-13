@@ -3,7 +3,7 @@ import { getTypeModal } from '../../store/slices/selectors.js';
 import AddChannel from './AddChannel.jsx';
 import RemoveChannel from './RemoveChannel.jsx';
 import RenameChannel from './RenameChannel.jsx';
-import { useSelectorCustom } from '../../store/index.js';
+import { useCustomSelector } from '../../store/index.js';
 
 const Modal = () => {
   const modals = {
@@ -11,7 +11,7 @@ const Modal = () => {
     removing: RemoveChannel,
     renaming: RenameChannel,
   };
-  const type = useSelectorCustom(getTypeModal);
+  const type = useCustomSelector(getTypeModal);
   const CurrentComponent = modals[type];
 
   return (

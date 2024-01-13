@@ -8,19 +8,19 @@ import useChat from '../../hooks/useApi.jsx';
 import useAuth from '../../hooks/useAuth.jsx';
 import { getChannelsName } from '../../store/slices/selectors.js';
 import { getModalShema } from '../../utils/validationShemas.js';
-import { useDispatchCustom, closeModalCustom, useSelectorCustom } from '../../store/index.js';
+import { useCustomDispatch, wrapCloseModal, useCustomSelector } from '../../store/index.js';
 
 const AddChannel = () => {
   const { t } = useTranslation();
-  const dispatch = useDispatchCustom();
-  const channelsName = useSelectorCustom(getChannelsName);
+  const dispatch = useCustomDispatch();
+  const channelsName = useCustomSelector(getChannelsName);
   const inputRef = useRef();
   const { currentUser } = useAuth();
 
   const { addNewChannel } = useChat();
 
   const hideModal = () => {
-    dispatch(closeModalCustom());
+    dispatch(wrapCloseModal());
   };
 
   const handleStatus = ({ status }) => {

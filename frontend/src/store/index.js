@@ -21,14 +21,14 @@ export default configureStore({
   },
 });
 
-export const useDispatchCustom = () => useDispatch();
-export const useSelectorCustom = (selector) => useSelector(selector);
+export const useCustomDispatch = () => useDispatch();
+export const useCustomSelector = (selector) => useSelector(selector);
 
-export const addMessageCustom = (payload) => addMessage(payload);
-export const addChannelCustom = (payload) => addChannel(payload);
-export const removeChannelCustom = (payload) => removeChannel(payload);
-export const renameChannelCustom = (payload) => renameChannel(payload);
-export const closeModalCustom = () => closeModal();
-export const openModalCustom = (type, id) => openModal(type, id);
-export const setCurrentChannelCustom = (payload) => setCurrentChannel(payload);
-export const fetchContentCustom = () => fetchContent();
+export const wrapAddMessage = (payload) => addMessage(payload);
+export const wrapAddChannel = (payload) => addChannel(payload);
+export const wrapRemoveChannel = (payload) => removeChannel(payload);
+export const wrapRenameChannel = (payload) => renameChannel(payload);
+export const wrapCloseModal = () => closeModal();
+export const wrapOpenModal = (type, id) => openModal(type, id);
+export const wrapSetCurrentChannel = (payload) => setCurrentChannel(payload);
+export const getContentFromServer = () => fetchContent();

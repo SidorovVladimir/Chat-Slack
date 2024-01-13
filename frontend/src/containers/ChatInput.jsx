@@ -7,14 +7,14 @@ import useAuth from '../hooks/useAuth';
 import { getCurrentChannelId } from '../store/slices/selectors';
 import useChatApi from '../hooks/useApi';
 import { chatInputSchema } from '../utils/validationShemas';
-import { useSelectorCustom } from '../store/index.js';
+import { useCustomSelector } from '../store/index.js';
 
 const ChatInput = () => {
   const { t } = useTranslation();
   const apiChat = useChatApi();
   const { currentUser: username } = useAuth();
   const inputRef = useRef();
-  const channelId = useSelectorCustom(getCurrentChannelId);
+  const channelId = useCustomSelector(getCurrentChannelId);
 
   const handleStatus = ({ status }, resetForm) => {
     if (status === 'ok') {

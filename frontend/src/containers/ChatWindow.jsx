@@ -7,13 +7,13 @@ import {
 } from '../store/slices/selectors';
 import ChatInput from './ChatInput';
 import Message from '../components/Message';
-import { useSelectorCustom } from '../store/index.js';
+import { useCustomSelector } from '../store/index.js';
 
 const ChatWindow = () => {
   const { t } = useTranslation();
   const lastMessage = useRef(null);
-  const currentChannelMessages = useSelectorCustom(getCurrentChannelMessages);
-  const currentChannel = useSelectorCustom(getCurrentChannel);
+  const currentChannelMessages = useCustomSelector(getCurrentChannelMessages);
+  const currentChannel = useCustomSelector(getCurrentChannel);
   useEffect(() => {
     if (lastMessage.current) {
       lastMessage.current.scrollIntoView({ behavior: 'instant' });
