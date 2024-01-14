@@ -13,11 +13,11 @@ Single page application (simplified version of Slack chat). With the ability to 
 
 1. Clone the application repository with the command:
 ```
-git clone git@github.com:SidorovVladimir/frontend-project-12.git
+git clone git@github.com:SidorovVladimir/Chat-Slack.git
 ```
 2. Go to the directory using the command:
 ```
-cd frontend-project-12
+cd Chat-Slack
 ```
 3. Install the dependencies with the command:
 ```
@@ -25,7 +25,7 @@ make install
 ```
 4. Launching the server and client side of the application for development:
 ```
-make start
+make start-develop
 ```
 
 
