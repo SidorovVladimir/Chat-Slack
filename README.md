@@ -30,4 +30,4 @@ make start-develop
 
 
 
-#### Demo Link: [Chat (Slack)](https://chat-slack-9czq.onrender.com/)
+#### Demo Link: [Chat (Slack)](https://chat-slack-p3zy.onrender.com/)
